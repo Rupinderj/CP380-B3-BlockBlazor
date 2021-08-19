@@ -1,5 +1,10 @@
-﻿@page "/payloads"
-
+﻿@page "/"
+@using CP380_B1_BlockList.Models
+@using CP380_B3_BlockBlazor.Data
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@inject HttpClient Http
 <!-- TODO: Add using and inject statements -->
 
 <h3>Pending Transactions</h3>
@@ -10,14 +15,44 @@
 }
 else
 {
-    <!-- TODO: Render a table with all of the pending transactions 
-               This table should include all of the fields for each pending transaction
-      -->
+   var a = 1;
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>a</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Transaction</th>
+                <th>Item</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var xyz in paylist)
+            {
+
+                <tr>
+                    <td>@a</td>
+                    <td>@xyz.user</td>
+                    <td> @xyz.amount</td>
+                    <td>@xyz.transactiontype</td>
+                    <td>@xyz.item</td>
+                </tr>
+
+                a++;
+            }
+        </tbody>
+        <!-- TODO: Add cards for each block in the block list
+                 Each card should show:
+                      - the position in the chain (starting at 0)
+                      - the hash
+                      - the nonce
+                      - the previous hash
+        -->
+    </table>
+
 }
-
-<p></p>
-
-<p>@submitResponse</p>
 
 
 <!-- TODO: Add EditForm to submit a new transaction to the server -->
