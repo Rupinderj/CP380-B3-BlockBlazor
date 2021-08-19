@@ -30,5 +30,29 @@ namespace CP380_B3_BlockBlazor.Data
         //       and accepts a Payload object.
         //       This method should POST the Payload to the web API server
         //
+        static HttpClient httpClient;
+        private readonly IConfiguration config;
+        private JsonSerializerOptions options;
+
+        public PendingTransactionService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        {
+            httpClient = httpClientFactory.CreateClient();
+            config = configuration.GetSection("PendingTransactionService");
+        }
+        public async Task<IList<Payload>> GetPnd()
+        {
+
+            var request = new HttpRequestMessage(HttpMethod.Get,
+            "http://localhost:5000/getpendingpayload");
+            var response = await httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                JsonSerializerOptions op = new(JsonSerializerDefaults.Web);
+                return  await JsonSerializer.DeserializeAsync<IList<Payload>>(
+                    await response.Content.ReadAsStreamAsync(), options
+                    );
+            }
+            return Array.Empty<Payload>();
+        }
     }
 }
